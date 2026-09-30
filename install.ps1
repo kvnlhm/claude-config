@@ -8,8 +8,10 @@ $claudeMd = Join-Path $dest "CLAUDE.md"
 $src = Join-Path $PSScriptRoot "CLAUDE.md"
 if (Test-Path $claudeMd) {
     Copy-Item $claudeMd "$claudeMd.bak" -Force
-    Add-Content $claudeMd "`n"
-    Get-Content $src | Add-Content $claudeMd
+    if ((Get-Content $claudeMd -Raw) -notmatch "# Task routing") {
+        Add-Content $claudeMd "`n"
+        Get-Content $src | Add-Content $claudeMd
+    }
 } else {
     Copy-Item $src $claudeMd
 }
